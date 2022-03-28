@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script  src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script  src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script  src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建组件
+        class Demo extends React.Component{
+            //React.createRef调用后可以返回一个容器，该容器可以存储被ref标识的节点
+            //该容器是专人专用的一个名对应一个节点
+            myRef = React.createRef()
+            //展示左侧输入框数据
+            showDate =()=>{
+                const{myRef} = this
+                
+                console.log(this.myRef.current.value)
+            }
+            
+            render(){
+                return(
+                    <div>
+                        <input ref={this.myRef} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                        <button  onClick={this.showDate}>点我提示左侧数据</button>&nbsp;
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(<Demo/>, document.getElementById('test1'))
+    </script>
+</body>
+</html>

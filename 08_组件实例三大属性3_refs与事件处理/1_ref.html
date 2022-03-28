@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script  src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script  src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script  src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建组件
+        class Demo extends React.Component{
+            //展示左侧输入框数据
+            showDate =()=>{
+                //有效率问题，会移除，不建议使用
+                const{input1} = this.refs
+                alert(input1.value)
+            }
+
+            render(){
+                return(
+                    <div>
+                        <input ref='input1' type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                        <button ref='btn1' onClick={this.showDate}>点我提示左侧数据</button>&nbsp;
+                        <input ref='input2' type="text" placeholder="失去焦点提示数据"/>
+                    </div>
+                )
+            }
+        }
+
+        //渲染
+        ReactDOM.render(<Demo/>, document.getElementById('test1'))
+    </script>
+</body>
+</html>

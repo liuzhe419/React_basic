@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+    <div id="test2"></div>
+
+    <!-- 引入react核心库 -->
+    <script  src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script  src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script  src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建组件
+        class Person extends React.Component{
+            render(){
+                const {name, age, sex} = this.props
+                return(
+                    <ul>
+                        <li>姓名：{name}</li>
+                        <li>性别：{sex}</li>
+                        <li>年龄：{age}</li>
+                    </ul>
+                )
+            }
+        }
+        const p = {name:'刘哲', age:18, sex:'男'}
+        //渲染
+        ReactDOM.render(<Person {...p}/>, document.getElementById('test1'))
+        ReactDOM.render(<Person name='蒋弘睿' age='19' /*这个19为字符串类型19，数值型改为{19}*/ sex='女'/>, document.getElementById('test2'))
+        //...p仅仅适用于标签属性的传递
+        //{...p}批量传递标签属性
+    </script>
+</body>
+</html>

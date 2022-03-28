@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        
+        class Count extends React.Component{
+            /* 
+                1. 初始化阶段: 由ReactDOM.render()触发---初次渲染
+                    1.	constructor()
+                    2.	getDerivedStateFromProps 
+                    3.	render()
+                    4.	componentDidMount()
+                2. 更新阶段: 由组件内部this.setSate()或父组件重新render触发
+                    1.	getDerivedStateFromProps
+                    2.	shouldComponentUpdate()
+                    3.	render()
+                    4.	getSnapshotBeforeUpdate
+                    5.	componentDidUpdate()
+                3. 卸载组件: 由ReactDOM.unmountComponentAtNode()触发
+                    1.	componentWillUnmount()
+            */
+            
+            constructor(props){
+                super(props)
+                console.log('Count_constructor')
+                this.state = {count:0}
+            }
+            //不能给实例加次方法，给类加静态方法
+            static getDerivedStateFromProps(props,state){
+                console.log('getDerivedStateFromProps',props,state)
+                return null //应该返回状态对象或者null，或者props
+            }//会改变state的值，并且之后无法修改，适用于state的值始终取决于props
+            //更新之前获取快照
+            getSnapshotBeforeUpdate(){
+                console.log('getSnapshotBeforeUpdate')
+                return null  //返回null或者快照值
+            }//任何值都可以是snapshot
+            /* 
+                getSnapshotBeforeUpdate() 在最近一次渲染输出（提交到 DOM 节点）之前调用。
+                它使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）。
+                此生命周期的任何返回值将作为参数传递给 componentDidUpdate()。
+            */
+            
+            //组件挂载完毕的钩子
+            componentDidMount(){
+                console.log('Count_componentDidMount')
+            }
+            //组件将要卸载钩子
+            componentWillUnmount(){
+                console.log('componentWillunMount')
+            }
+            //控制组件更新的阀门//不写默认返回为真，setState()总能执行
+            shouldComponentUpdate(){
+                console.log('shouldComponentUpdate')
+                return false
+            }
+            //组件更新完成钩子
+            componentDidUpdate(preProps,preState,snapshotValue){
+                console.log('componentDidUpdate')
+            }
+            //+1按钮回调
+            add = () =>{
+                //获取原状态
+                const {count} = this.state
+                //更新状态
+                this.setState({count:count+1})
+            }
+            //卸载按钮
+            delete =()=>{
+                ReactDOM.unmountComponentAtNode(document.getElementById("test1"))
+            }
+            //强制更新
+            force =()=>{
+                this.forceUpdate()
+            }
+            render(){
+                console.log('Count_render')
+                const {count} =this.state
+                return(
+                    <div>
+                        <h2>当前求和为{count}</h2>
+                        <button onClick={this.add}>点我+1</button>
+                        <button onClick={this.delete}>卸载组件</button>
+                        <button onClick={this.force}>不更改任何任何状态中的数据,强制更新</button>
+                    </div>
+                )
+            }
+        }
+
+        //渲染
+        ReactDOM.render(<Count/>,document.getElementById('test1'))
+    </script>
+</body>
+</html>

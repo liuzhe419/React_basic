@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Time extends React.Component {
+            state = {date:new Date()}
+
+            componentDidMount(){
+                setInterval(()=>{
+                    this.setState({date:new Date()})
+                },1000)
+            }
+
+            render(){
+                return(
+                    <div>
+                        <h1>Hello</h1>
+                        <input type="text" value=""/>{/*值不会丢失*/}
+                        <span>现在是:{this.state.date.toString()}</span>    
+                    </div>
+                )
+            }//diffing算法最小力度是标签，嵌套也没关系，多层对比
+        }
+        ReactDOM.render(<Time/>,document.getElementById('test1'))
+    </script>
+</body>
+</html>

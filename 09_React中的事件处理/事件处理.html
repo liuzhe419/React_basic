@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script  src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script  src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script  src="../js/babel.min.js"></script>
+    
+    <script type="text/babel">
+        //创建组件
+        class Demo extends React.Component{
+            /* 
+                (1).通过onXxx属性指定事件处理函数（注意大小写
+                    a.React使用的是自定义事件，而不使用原生DOM事件————为了更好兼容性
+                    b.React中的事件是通过事件委托方式处理的（委托给组件最外层元素）————为了高效（冒泡）
+                (2).通过event.target得到发生事件的DOM元素对象————不要过度使用ref
+            */
+            
+            
+            //创建ref容器
+            myRef = React.createRef()
+
+            //展示左侧输入框数据
+            showDate =()=>{
+                const{myRef} = this
+                
+                console.log(this.myRef.current.value)
+            }
+            //操作对象是事件发生对象时，省略ref，用event.target
+            showDate2 =()=>{
+                alert(event.target.value)
+            }
+            
+            render(){
+                return(
+                    <div>
+                        <input ref={this.myRef} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                        <button  onClick={this.showDate}>点我提示左侧数据</button>&nbsp;
+                        <input onBlur={this.showDate2} type="text" placeholder="失去焦点提示数据"/>&nbsp;
+                    </div>
+                )
+            }
+        }
+
+        //渲染
+        ReactDOM.render(<Demo/>, document.getElementById('test1'))
+    </script>
+</body>
+</html>

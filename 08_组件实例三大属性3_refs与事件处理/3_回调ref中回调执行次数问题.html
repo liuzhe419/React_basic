@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3_回调ref中回调执行次数问题</title>
+</head>
+<body>
+    <!-- 准备一个容器 -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script  src="../js/react.development.js"></script>
+    <!-- 引入react-dom库 -->
+    <script  src="../js/react-dom.development.js"></script>
+    <!-- 引入babel -->
+    <script  src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //创建组件
+        class Demo extends React.Component{
+            
+            state = {isHot:true}
+
+            //切换天气
+            changeWeather =()=>{
+                const {isHot} = this.state
+                this.setState({isHot:!isHot})
+            }
+
+            //展示输入框数据
+            showDate =()=>{
+                const{input1} = this
+                alert(input1.value)
+            }
+            saveInput=(c)=>{
+                this.input1=c
+                console.log('@',c)
+            }
+
+            render(){
+                const {isHot} = this.state
+                return(
+                    <div>
+                        <h2>今天天气很{isHot ? '炎热':'凉爽'}</h2>
+                        {/*<input ref={c=> {this.input1=c;console.log('@',c)}} type="text" placeholder="点击按钮提示数据"/>&nbsp;*/}
+                        <input ref={this.saveInput} type="text" placeholder="点击按钮提示数据"/>
+                        <button  onClick={this.showDate}>点我提示数据</button>&nbsp;
+                        <button  onClick={this.changeWeather}>点我切换天气</button>
+                    </div>
+                )
+            }
+        }
+        
+        /* 
+        如果 ref 回调函数是以内联函数的方式定义的，在更新过程中它会被执行两次，
+        第一次传入参数 null，然后第二次会传入参数 DOM 元素。
+        这是因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref 并且设置新的。
+        通过将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。 
+        */
+        //渲染
+        ReactDOM.render(<Demo/>, document.getElementById('test1'))
+    </script>
+</body>
+</html>
